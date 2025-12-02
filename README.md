@@ -1,10 +1,11 @@
 # UTH_ConfMS
 a student project 
-Team Members :  Nguyễn Đăng Khôi
-                Phạm Thanh Hải
-                Đào Châu Giang
-                Lê Quốc Kiệt
-                Nguyễn Văn Hiến
+Team Members :  
+Nguyễn Đăng Khôi
+Phạm Thanh Hải
+Đào Châu Giang
+Lê Quốc Kiệt
+Nguyễn Văn Hiến
 About UTH Scientific Conference Paper Management System.
 ● Vietnamese: Hệ thống quản lý giấy tờ Hội nghị Nghiên cứu khoa học dành cho Trường ĐH UTH
 ● Abbreviation: UTH-ConfMS
