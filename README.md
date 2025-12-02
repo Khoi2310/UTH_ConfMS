@@ -7,17 +7,17 @@ Phạm Thanh Hải
 Lê Quốc Kiệt
 Nguyễn Văn Hiến
 
-
-
-
-
 About UTH Scientific Conference Paper Management System.
+
 ● Vietnamese: Hệ thống quản lý giấy tờ Hội nghị Nghiên cứu khoa học dành cho Trường ĐH UTH
 ● Abbreviation: UTH-ConfMS
+
 a. Context:
+
 Faculties at UTH University already organize research conferences using a combination of external software and services for submission, peer review, decision making, camera-ready collection, scheduling, and publication. However, the workflows are fragmented across multiple tools and vendor portals, which leads to duplicated data, inconsistent templates, dispersed communications, uneven enforcement of conflicts of interest (COI), and limited end-to-end reporting. The proposed system, UTH-ConfMS, unifies these activities by providing an EasyChair style, end-to-end flow: Call for Papers, then Submission, then Review, then Decision, then Camera-ready, then Program and Proceedings. It offers centralized role-based access control (RBAC), single sign-on (SSO), configurable policies, full audit trails, and optional connectors and migration utilities to interoperate with or replace existing services over time.
 
 b. Proposed Solutions:
+
 - Conference and Call for Papers (CFP) setup: create CFP page, deadlines, tracks/topics, email/form templates.
 - Submission/abstract and updates: author metadata, co-authors, PDF upload; withdraw/edit before deadline.
 - Program Committee (PC) management: invite PC members, track review progress, detect and block conflicts of interest (COI).
@@ -49,6 +49,7 @@ b. Proposed Solutions:
 
 
 (*) 3.2. Main proposal content (including result and product)
+
 a. Theory and practice (document):
 ● Students should apply the software development process and UML 2.0 in the modeling system.
 ● The documents include User Requirements, Software Requirement Specifications, Architecture Design, Detail Design, System Implementation, Testing Document, Installation Guide, source code, and deployable software packages.
@@ -59,10 +60,13 @@ a. Theory and practice (document):
 ○ Web Client: ReactJS
 
 b. Products:
+
 ○ Role-based web app for Authors/PC/Chairs; Admin portal for platform ops.
 ○ Public portal for CFP, program, accepted papers (if enabled)..
 ○ OpenAPI/Swagger for standardized REST.
+
 c. Proposed Tasks:
+
 ○ TP1 - Admin & platform: tenancy, RBAC, SMTP/quota, audit.
 ○ TP2 - Conference & CFP: create/configure conference, tracks, deadlines, templates.
 ○ TP3 - Submission: author dashboard, metadata, PDF upload, withdraw/edit..
@@ -72,4 +76,5 @@ c. Proposed Tasks:
 ○ TP7 - Camera-ready & proceedings: final uploads, export to program/proceedings.
 ○ TP8 - Build – Deploy and Test the system.
 ○ TP9 - Prepare all the required documents: System analysis and Design, Test plan, Installation manual, User manual.
+
 4. Other comments (propose all relative things if have).
