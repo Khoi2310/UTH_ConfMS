@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<!-- Toggle checkbox -->
+<input type="checkbox" id="toggle-sidebar" hidden>
+
+<!-- Header -->
+<header class="topbar">
+  <label for="toggle-sidebar" class="menu-btn">☰</label>
+  <div class="topbar-right">
+    <span class="icon"><i class="fa-solid fa-moon"></i></span>
+    <span class="icon"><i class="fa-solid fa-bell"></i></span>
+    <span class="avatar">Admin <i class="fa-solid fa-chevron-down"></i></span>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo">
+  </div>
+  <ul>
+    <li class="active">Dashboard</li>
+    <li>Conference / CFP</li>
+    <li>Submissions</li>
+    <li>Program Committee</li>
+    <li>Assign & Review</li>
+    <li>Decisions</li>
+    <li>Camera-ready</li>
+    <li>Reports & Analytics</li>
+    <li>Settings</li>
+  </ul>
+</aside>
+
+<!-- Main content -->
+<main class="main">
+  <h2>Dashboard</h2>
+
+  <!-- Cards -->
+  <section class="cards">
+    <div class="card">
+      <p>Total Submissions</p>
+      <h3>152</h3>
+      <span class="up">+4.0%</span>
+    </div>
+    <div class="card">
+      <p>Papers in Review</p>
+      <h3>87</h3>
+    </div>
+    <div class="card">
+      <p>Acceptance Rate</p>
+      <h3>29%</h3>
+      <span class="up">+4.5%</span>
+    </div>
+    <div class="card">
+      <p>Pending Decisions</p>
+      <h3>24</h3>
+      <span class="down">-20%</span>
+    </div>
+  </section>
+
+  <!-- Placeholder charts -->
+  <section class="charts">
+    <div class="chart">Submissions by Track</div>
+    <div class="chart">Acceptance Rate vs Review Progress</div>
+  </section>
+
+</main>
+
+</body>
+</html>
