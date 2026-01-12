@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard Header</title>
+    <link rel="stylesheet" href="../../../Css/Dashboard.css" />
+
+    <!-- Icons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/3.0.7/fonts/basic/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+<header class="header">
+    <div class="header-inner">
+
+        <!-- Left -->
+        <div class="header-left">
+            <div class="title">
+                <h1>Dashboard</h1>
+                <p>Admin</p>
+            </div>
+        </div>
+
+        <!-- Center -->
+        <div class="header-center">
+            <div class="search-box">
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Search..." />
+                <button class="filter-btn">
+                    <i class='bx  bx-filter'></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right -->
+        <div class="header-right">
+            <button class="btn-primary">
+                <i class="bx bx-plus"></i>
+                New
+            </button>
+
+            <button class="icon-btn" onclick="toggleTheme()">
+                <i class="bx bx-moon"></i>
+            </button>
+
+            <button class="icon-btn notification">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </button>
+
+            <button class="icon-btn">
+                <i class="bx bx-cog"></i>
+            </button>
+
+            <div class="user">
+                <img src="https://i.pinimg.com/736x/ff/de/85/ffde85a293c7b845956ac3bb08a47ad3.jpg" />
+                <div class="user-info">
+                    <p class="name">Nguyen Van A</p>
+                    <p class="role">Administrator</p>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<script>
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+}
+</script>
+</body>
+</html>
