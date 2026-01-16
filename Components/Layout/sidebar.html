@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Basic Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <!-- Filled Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+    <!-- Brand Icons -->
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../Css/Sidebar.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../../assets/img/logo.png" alt="Logo">
+            <button class="icon-btn" onclick="toggleSidebar()">
+                <i class='bx bx-menu'></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a class="menu-item active">
+                <i class='bx  bx-dashboard'></i>
+                <span>Dashboard</span>
+                <span class="badge">New</span>
+            </a>
+
+            <a class="menu-item">
+                <i class='bx bx-user'></i>
+                <span>Users</span>
+                <span class="count">2.4k</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Conference-CFP.png" alt="Conference-CFP">
+                <span>Conference / CFP</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Submission.png" alt="Submissions">
+                <span>Submissions</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Program-Committee.png" alt="Program-Committee">
+                <span>Program Committee</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Assign&Review.png" alt="Assign-Review">
+                <span>Assign & Review</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Decisions.png" alt="Decisions">
+                <span>Decisions</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Camera-ready.png" alt="Camera-ready">
+                <span>Camera-ready</span>
+            </a>
+
+            <a class="menu-item">
+                <img src="../../assets/icons/Reports&Analytics.png" alt="Reports-Analytics">
+                <span>Reports & Analytics</span>
+            </a>
+
+            <a class="menu-item">
+                <i class='bx  bx-cog'></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+            <img src="https://i.pinimg.com/736x/ff/de/85/ffde85a293c7b845956ac3bb08a47ad3.jpg">
+            <div>
+                <strong>Nguyen Van A</strong>
+                <small>Administrator</small>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        /* ================= SIDEBAR FUNCTIONALITY ================= */
+        function toggleSidebar() {
+            window.parent.postMessage({ type: "TOGGLE_SIDEBAR" }, "*");
+        }
+
+        /* ================= SYNC WITH PARENT ================= */
+        window.addEventListener("message", (e) => {
+            if (!e.data?.type) return;
+
+            switch (e.data.type) {
+                case "SYNC_DARK":
+                    document.documentElement.classList.toggle("dark", e.data.payload);
+                    break;
+            }
+        });
+
+        /* ================= NOTIFY PARENT WHEN READY ================= */
+        window.addEventListener("load", () => {
+            window.parent.postMessage({ type: "IFRAME_READY" }, "*");
+        });
+    </script>
+
+</body>
+
+</html>
