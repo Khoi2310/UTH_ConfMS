@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard Application - Quản lý và theo dõi hệ thống">
-    <title>Dashboard - Main App</title>
+    <title>UTH Scientific Conference Paper Management System</title>
     
     <link rel="stylesheet" href="../Css/index.css">
 </head>
@@ -74,6 +74,10 @@
                         type: 'SYNC_DARK',
                         payload: this.darkMode
                     });
+                    this.broadcast({
+                        type: 'SYNC_SIDEBAR_COLLAPSED',
+                        payload: this.sidebarCollapsed
+                    });
                 }, 100);
             }
         };
@@ -115,6 +119,11 @@
             if (sidebarFrame) {
                 sidebarFrame.classList.toggle('collapsed', this.sidebarCollapsed);
             }
+            // Broadcast collapsed state to sidebar iframe
+            this.broadcast({
+                type: 'SYNC_SIDEBAR_COLLAPSED',
+                payload: this.sidebarCollapsed
+            });
             this.save();
         };
 

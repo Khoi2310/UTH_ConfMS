@@ -104,6 +104,16 @@
                 case "SYNC_DARK":
                     document.documentElement.classList.toggle("dark", e.data.payload);
                     break;
+                case "SYNC_SIDEBAR_COLLAPSED":
+                    const sidebar = document.querySelector(".sidebar");
+                    if (sidebar) {
+                        if (e.data.payload) {
+                            sidebar.classList.add("collapsed");
+                        } else {
+                            sidebar.classList.remove("collapsed");
+                        }
+                    }
+                    break;
             }
         });
 
