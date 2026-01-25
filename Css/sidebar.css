@@ -36,7 +36,6 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     background: transparent;
-    -webkit-font-smoothing: antialiased;
     height: 100vh;
     overflow: hidden;
 }
@@ -47,11 +46,9 @@ body {
     height: 100vh;
     background: var(--bg-sidebar);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    transition: background var(--transition-base), border-color var(--transition-base);
     overflow: hidden;
 }
 
@@ -60,17 +57,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 16px;
+    padding: 16px;
     border-bottom: 1px solid var(--border-color);
-    transition: border-color var(--transition-base);
 }
 
-.sidebar-logo span {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-    transition: color var(--transition-base);
+.sidebar-logo img {
+    max-height: 36px;
+    max-width: 150px;
+    object-fit: contain;
 }
 
 .sidebar-logo .icon-btn {
@@ -81,14 +75,7 @@ body {
     color: var(--text-secondary);
     padding: 6px;
     border-radius: var(--radius-md);
-    transition: all var(--transition-base);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    position: relative;
-    min-width: 36px;
-    min-height: 36px;
+    transition: var(--transition-base);
 }
 
 .sidebar-logo .icon-btn:hover {
@@ -102,94 +89,82 @@ body {
     flex: 1;
     padding: 12px;
     overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.sidebar-menu::-webkit-scrollbar {
-    width: 6px;
-}
-
-.sidebar-menu::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.sidebar-menu::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: var(--radius-full);
-}
-
-.sidebar-menu::-webkit-scrollbar-thumb:hover {
-    background: var(--text-secondary);
 }
 
 .menu-item {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 14px;
+    padding: 10px 14px;
     border-radius: var(--radius-md);
     text-decoration: none;
     color: var(--text-primary);
     margin-bottom: 4px;
     font-size: 14px;
     font-weight: 500;
-    transition: all var(--transition-base);
-    position: relative;
+    transition: var(--transition-base);
     cursor: pointer;
+    overflow: visible;
 }
 
 .menu-item i {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.menu-item span:not(.badge):not(.count) {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    flex: 1;
+}
+
+.menu-item img {
     width: 24px;
-    text-align: center;
-    transition: transform var(--transition-fast);
+    height: 24px;
+    object-fit: contain;
+    z-index: 1;
 }
 
 .menu-item:hover {
     background: var(--hover-bg);
-    transform: translateX(4px);
-}
-
-.menu-item:hover i {
-    transform: scale(1.1);
+    transform: translateX(2px);
 }
 
 .menu-item.active {
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    background: #29999C;
+    /* background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); */
     color: white;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
 }
 
-.menu-item.active:hover {
-    transform: translateX(4px) scale(1.02);
+.dark .menu-item img {
+    filter: brightness(0) invert(1) contrast(1.1);
 }
 
-.menu-item.active i {
-    transform: scale(1.15);
-}
 
-.menu-item span:not(.badge):not(.count) {
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* ================= BADGES ================= */
+/* ================= BADGE / COUNT (NORMAL) ================= */
 .badge {
     background: #ef4444;
     color: white;
     font-size: 10px;
     font-weight: 600;
-    padding: 3px 8px;
+    padding: 4px 8px;
     border-radius: var(--radius-full);
     margin-left: auto;
-    animation: pulse 2s infinite;
-}
-
-.menu-item.active .badge {
-    background: rgba(255, 255, 255, 0.3);
-    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
 }
 
 .count {
@@ -197,28 +172,9 @@ body {
     color: var(--text-secondary);
     font-size: 11px;
     font-weight: 600;
-    padding: 3px 8px;
+    padding: 4px 8px;
     border-radius: var(--radius-full);
     margin-left: auto;
-    transition: all var(--transition-base);
-}
-
-.dark .count {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.menu-item.active .count {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.7;
-    }
 }
 
 /* ================= USER SECTION ================= */
@@ -278,6 +234,23 @@ body {
     transition: color var(--transition-base);
 }
 
+
+/* ================= COLLAPSED =================
+.sidebar.collapsed .sidebar-logo img,
+.sidebar.collapsed .menu-item span:not(.badge):not(.count),
+.sidebar.collapsed .sidebar-user div {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-logo {
+    justify-content: center;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 12px;
+} */
+
 /* ================= COLLAPSED STATE ================= */
 .sidebar.collapsed .sidebar-logo span,
 .sidebar.collapsed .menu-item span:not(.badge):not(.count),
@@ -308,11 +281,13 @@ body {
 .sidebar.collapsed .badge,
 .sidebar.collapsed .count {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 4px;
+    right: 4px;
     margin: 0;
     font-size: 9px;
     padding: 2px 5px;
+    transform: translate(40%, -40%);
+    z-index: 1;
 }
 
 /* Hide user image when collapsed, keep it minimal */
@@ -324,6 +299,41 @@ body {
 .sidebar.collapsed .sidebar-user img {
     width: 36px;
     height: 36px;
+}
+
+/* ================= 🔴 NOTIFICATION DOT ================= */
+.sidebar.collapsed .badge,
+.sidebar.collapsed .count {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    z-index: 20;
+
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    min-width: unset;
+
+    border-radius: 50%;
+    background: #ef4444;
+
+    font-size: 0;
+    line-height: 0;
+
+    box-shadow:
+        0 0 0 2px var(--bg-sidebar),
+        0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* Pulse nhẹ cho dot */
+@keyframes dot-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+    70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.sidebar.collapsed .badge {
+    animation: dot-pulse 2s infinite;
 }
 
 /* ================= RESPONSIVE ================= */
