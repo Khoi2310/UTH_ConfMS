@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Decisions</title>
+    <link rel="stylesheet" href="../css/decisions.css" />
+</head>
+<body>
+    <div class="content-wrapper">
+        <header class="page-header">
+            <div>
+                <h2>Decisions</h2>
+                <p class="page-description">Ra quyết định accept/reject và quản lý meta-review</p>
+            </div>
+        </header>
+
+        <section class="card">
+            <div class="split">
+                <div>
+                    <h3>Decision overview</h3>
+                    <p class="muted">Tổng hợp theo track, hỗ trợ xuất danh sách.</p>
+                </div>
+                <div class="actions">
+                    <button class="btn">Export CSV</button>
+                    <button class="btn primary">Publish decisions</button>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paper</th>
+                            <th>Avg Score</th>
+                            <th>Recommendation</th>
+                            <th>Decision</th>
+                            <th>PC Chair</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#152 - Efficient AI for Edge Devices</td>
+                            <td>4.1</td>
+                            <td><span class="badge ok">Accept</span></td>
+                            <td><span class="badge info">Pending</span></td>
+                            <td>Nguyen Van A</td>
+                        </tr>
+                        <tr>
+                            <td>#147 - Privacy-preserving Analytics</td>
+                            <td>2.3</td>
+                            <td><span class="badge warn">Reject</span></td>
+                            <td><span class="badge warn">Reject</span></td>
+                            <td>Nguyen Van A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+
