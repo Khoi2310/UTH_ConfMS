@@ -2,6 +2,7 @@
 // Each route points to an HTML page that can bring its own CSS via <link> tags in <head>.
 const routes = {
     '/': { title: 'Dashboard', file: './pages/dashboard.html' },
+    '/login': { title: 'Login', file: './pages/login.html' },
     '/dashboard': { title: 'Dashboard', file: './pages/dashboard.html' },
     '/users': { title: 'Users', file: './pages/users.html' },
     '/conference': { title: 'Conference / CFP', file: './pages/conference.html' },
@@ -101,26 +102,158 @@ class Router {
             const doc = parser.parseFromString(html, 'text/html');
             const bodyContent = doc.body.innerHTML;
             
+            // First, remove page-specific CSS from previous route (keep only global CSS)
+            // Global CSS: index.css, header.css, sidebar.css, and external URLs
+            const existingCSSLinks = Array.from(document.head.querySelectorAll('link[rel="stylesheet"]'));
+            const globalCSSPatterns = ['index.css', 'header.css', 'sidebar.css'];
+            const pageSpecificCSS = existingCSSLinks.filter(link => {
+                const href = link.getAttribute('href') || '';
+                // Keep external URLs (CDN, fonts, etc.)
+                if (href.match(/^(https?:|\/\/)/)) {
+                    return false;
+                }
+                // Keep global CSS files
+                const isGlobal = globalCSSPatterns.some(pattern => 
+                    href.toLowerCase().includes(pattern.toLowerCase())
+                );
+                return !isGlobal;
+            });
+            
+            // Remove page-specific CSS
+            pageSpecificCSS.forEach(link => {
+                link.remove();
+            });
+            
             // Extract and inject CSS links from head
             const cssLinks = doc.head.querySelectorAll('link[rel="stylesheet"]');
             cssLinks.forEach(link => {
                 const href = link.getAttribute('href');
-                // Check if this CSS is already loaded
-                const existingLink = document.head.querySelector(`link[href="${href}"]`);
+                
+                // Skip index.css, header.css, sidebar.css as they're already loaded globally
+                if (href && (href.includes('index.css') || href.includes('header.css') || href.includes('sidebar.css'))) {
+                    return;
+                }
+                
+                // Resolve relative CSS paths to absolute paths from project root
+                // This is needed because CSS is injected into index.html (root), not the page HTML
+                let resolvedHref = href;
+                
+                // Skip external URLs (http://, https://, //, or absolute paths starting with /)
+                if (!href.match(/^(https?:|\/\/|\/)/)) {
+                    // Extract CSS filename from path (handles ../Css/file.css, ./Css/file.css, Css/file.css)
+                    const cssFilename = href.split('/').pop();
+                    
+                    // All CSS files are in ./Css/ from project root
+                    // So we always resolve to ./Css/filename.css
+                    if (cssFilename && cssFilename.endsWith('.css')) {
+                        resolvedHref = './Css/' + cssFilename;
+                    } else {
+                        // Fallback: try to resolve using URL constructor
+                        try {
+                            const routeBase = new URL(routeFile, window.location.href);
+                            const routeDir = routeBase.href.substring(0, routeBase.href.lastIndexOf('/') + 1);
+                            const resolvedUrl = new URL(href, routeDir);
+                            const rootUrl = new URL('.', window.location.href);
+                            resolvedHref = resolvedUrl.href.replace(rootUrl.href, './');
+                        } catch (e) {
+                            console.warn('Could not resolve CSS path:', href, e);
+                            // Keep original href as fallback
+                        }
+                    }
+                }
+                
+                // Normalize path for comparison (case-insensitive for CSS folder)
+                const normalizePath = (path) => {
+                    // Normalize Css/css to Css for comparison
+                    let normalized = path.replace(/\/css\//gi, '/Css/');
+                    if (normalized.startsWith('./')) return normalized;
+                    if (normalized.startsWith('../')) return normalized;
+                    if (!normalized.startsWith('/') && !normalized.match(/^(https?:|\/\/)/)) {
+                        return './' + normalized;
+                    }
+                    return normalized;
+                };
+                
+                const normalizedResolved = normalizePath(resolvedHref);
+                
+                // Check if this CSS is already loaded (case-insensitive comparison)
+                const existingLink = Array.from(document.head.querySelectorAll('link[rel="stylesheet"]'))
+                    .find(link => {
+                        const existingHref = link.getAttribute('href');
+                        return normalizePath(existingHref).toLowerCase() === normalizedResolved.toLowerCase();
+                    });
+                
                 if (!existingLink) {
                     const newLink = document.createElement('link');
                     newLink.rel = 'stylesheet';
-                    newLink.href = href;
+                    newLink.href = resolvedHref;
                     document.head.appendChild(newLink);
                 }
             });
             
             // Inject content into container
             if (this.container) {
-                this.container.innerHTML = bodyContent;
+                // Clear container first
+                this.container.innerHTML = '';
                 
-                // Re-initialize any scripts in the loaded content
-                this.initScripts(this.container);
+                // Create a temporary div to parse the body content
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = bodyContent;
+                
+                // Extract scripts first before moving nodes
+                const scripts = Array.from(tempDiv.querySelectorAll('script'));
+                const scriptData = scripts.map(script => ({
+                    src: script.src,
+                    content: script.textContent || script.innerHTML || '',
+                    attributes: Array.from(script.attributes).map(attr => ({
+                        name: attr.name,
+                        value: attr.value
+                    }))
+                }));
+                
+                // Remove scripts from tempDiv to prevent auto-execution
+                scripts.forEach(script => script.remove());
+                
+                // Move all nodes from tempDiv to container (without scripts)
+                while (tempDiv.firstChild) {
+                    this.container.appendChild(tempDiv.firstChild);
+                }
+                
+                // Now execute scripts manually, one by one
+                scriptData.forEach(scriptInfo => {
+                    try {
+                        const newScript = document.createElement('script');
+                        
+                        // Copy attributes
+                        scriptInfo.attributes.forEach(attr => {
+                            newScript.setAttribute(attr.name, attr.value);
+                        });
+                        
+                        if (scriptInfo.src) {
+                            // External script
+                            newScript.src = scriptInfo.src;
+                            this.container.appendChild(newScript);
+                        } else if (scriptInfo.content.trim()) {
+                            // Inline script - check if already wrapped
+                            const trimmed = scriptInfo.content.trim();
+                            const isWrapped = trimmed.startsWith('(function') || 
+                                             trimmed.startsWith('!function') ||
+                                             (trimmed.includes('(function') && trimmed.includes('})();'));
+                            
+                            if (isWrapped) {
+                                // Already wrapped, use as-is
+                                newScript.textContent = scriptInfo.content;
+                            } else {
+                                // Wrap in IIFE
+                                newScript.textContent = `(function() { 'use strict'; ${scriptInfo.content} })();`;
+                            }
+                            
+                            this.container.appendChild(newScript);
+                        }
+                    } catch (error) {
+                        console.error('Error executing script:', error, scriptInfo);
+                    }
+                });
             }
 
             // Sync route state to iframes (header/sidebar)
@@ -159,18 +292,6 @@ class Router {
         }
     }
     
-    initScripts(container) {
-        // Re-run any scripts in the loaded content
-        const scripts = container.querySelectorAll('script');
-        scripts.forEach(oldScript => {
-            const newScript = document.createElement('script');
-            Array.from(oldScript.attributes).forEach(attr => {
-                newScript.setAttribute(attr.name, attr.value);
-            });
-            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-            oldScript.parentNode.replaceChild(newScript, oldScript);
-        });
-    }
 }
 
 // ================= EXPORT ROUTER INSTANCE =================
