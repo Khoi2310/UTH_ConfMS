@@ -59,7 +59,14 @@ h3 { color: var(--text-primary); margin-bottom: var(--spacing-sm); }
 
 table { width: 100%; border-collapse: collapse; min-width: 760px; }
 thead { background: var(--bg-secondary); }
-th, td { padding: 12px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); font-size: 14px; }
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    text-align: left;
+    vertical-align: middle;
+}
 
 .tag {
     display: inline-flex;

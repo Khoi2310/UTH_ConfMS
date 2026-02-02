@@ -6,7 +6,7 @@
     <title>Decision & Notifications</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../Css/index.css">
+    <!-- Note: index.css is already loaded in index.html, no need to load again -->
     <link rel="stylesheet" href="../Css/decisions.css">
 </head>
 
@@ -139,13 +139,19 @@ Program Committee
 </body>
 
 <script>
+(function() {
+    'use strict';
     const checkAll = document.getElementById('checkAll');
     const rowChecks = document.querySelectorAll('.row-check');
 
+    if (!checkAll || !rowChecks.length) return;
+
     function updateHeaderCheckbox() {
         const checkedCount = document.querySelectorAll('.row-check:checked').length;
-        checkAll.checked = checkedCount === rowChecks.length;
-        checkAll.indeterminate = checkedCount > 0 && checkedCount < rowChecks.length;
+        if (checkAll) {
+            checkAll.checked = checkedCount === rowChecks.length;
+            checkAll.indeterminate = checkedCount > 0 && checkedCount < rowChecks.length;
+        }
     }
 
     rowChecks.forEach(cb => {
@@ -155,14 +161,17 @@ Program Committee
         });
     });
 
-    checkAll.addEventListener('change', () => {
-        const checked = checkAll.checked;
-        rowChecks.forEach(cb => {
-            cb.checked = checked;
-            cb.closest('tr').classList.toggle('selected', checked);
+    if (checkAll) {
+        checkAll.addEventListener('change', () => {
+            const checked = checkAll.checked;
+            rowChecks.forEach(cb => {
+                cb.checked = checked;
+                cb.closest('tr').classList.toggle('selected', checked);
+            });
+            checkAll.indeterminate = false;
         });
-        checkAll.indeterminate = false;
-    });
+    }
+})();
 </script>
 
 </html>

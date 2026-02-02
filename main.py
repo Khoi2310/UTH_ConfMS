@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import get_settings
 from app.core.database import init_db
@@ -49,14 +50,30 @@ app.include_router(reviews.router, prefix="/api/v1")
 app.include_router(pc_members.router, prefix="/api/v1")
 
 
-@app.get("/", response_class=HTMLResponse)
-def home():
-    return "<h1>Welcome to UTH Conference Management System API</h1>"
 
-templates = Jinja2Templates(directory="templates")
-@app.get("/login", response_class=HTMLResponse)
-def login(request: Request):
-    return templates.TemplateResponse(request,"login.html", {"request": request})
+main = Jinja2Templates(directory="UI")
+@app.get("/main", response_class=HTMLResponse)
+def main_page(request: Request):
+    return main.TemplateResponse(request, "index.html", {"request": request})
+
+
+# Login page route (GET)
+@app.get("/", response_class=HTMLResponse)
+def login_get(request: Request):
+    return main.TemplateResponse("login.html", {"request": request})
+
+# Login form handler (POST)
+from fastapi import Form
+from fastapi.responses import RedirectResponse, JSONResponse
+
+@app.post("/")
+async def login_post(request: Request, email: str = Form(...), password: str = Form(...)):
+    # Dummy authentication logic, replace with real user check
+    if email == "admin@example.com" and password == "admin":
+        return JSONResponse({"success": True})
+    return JSONResponse({"success": False}, status_code=401)
+
+pages = Jinja2Templates(directory="UI/Pages")
 
 
 
@@ -65,3 +82,10 @@ def health_check():
     """Health check endpoint."""
     return {"status": "healthy", "service": "UTH-ConfMS API"}
 
+
+# Mount static directories for CSS and assets (images, icons)
+app.mount("/Css", StaticFiles(directory="UI/Css"), name="Css")
+app.mount("/assets", StaticFiles(directory="UI/assets"), name="assets")
+app.mount("/js", StaticFiles(directory="UI/js"), name="js") 
+app.mount("/Components", StaticFiles(directory="UI/Components"), name="Components")
+app.mount("/Pages", StaticFiles(directory="UI/Pages"), name="Pages")

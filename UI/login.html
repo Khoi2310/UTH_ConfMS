@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | UTH Conference</title>
+    <link rel="stylesheet" href="/Css/login.css" />
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="login-card">
+        <!-- LEFT (Welcome) -->
+        <div class="login-left">
+          <h3 class="welcome">WELCOME TO</h3>
+          <h2 class="system-title">
+            <span class="uth">UTH</span>
+            <span class="system-name">
+              Scientific Conference Paper Management System
+            </span>
+          </h2>
+          <p>
+            This is an app to help your application streamline the submission,
+            review, and management of scientific papers for UTH conferences. It
+            supports authors, reviewers, and organizers by providing a secure,
+            efficient, and centralized platform for the entire conference paper
+            workflow.
+          </p>
+        </div>
+
+        <!-- RIGHT (Login) -->
+        <div class="login-right">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h2 class="title" style="margin: 0; text-align: left;">LOGIN</h2>
+            <span style="font-weight: bold; color: #009688; font-size: 28px; letter-spacing: 1px;">UTH-CONFMS</span>
+          </div>
+          <form id="login-form" method="post" action="/login">
+            <div id="login-error" style="height:18px;display:flex;align-items:center;color:#e53935;font-size:14px;margin-bottom:8px;text-align:left;padding-left:2px;overflow:hidden;visibility:hidden;"></div>
+            <div class="form-group">
+              <input type="email" name="email" placeholder="Email" required />
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" placeholder="Password" required />
+            </div>
+            <div class="options">
+              <label>
+                <input type="checkbox" name="remember" />
+                Remember me
+              </label>
+              <a href="#">Forgot password?</a>
+            </div>
+            <button class="btn-primary" type="submit">Log in</button>
+            <div class="divider">or</div>
+            <button class="btn-google" type="button" onclick="alert('Google login isn\'t supported yet!')">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
+              Sign in with Google
+            </button>
+          </form>
+          <script>
+            document.getElementById('login-form').addEventListener('submit', async function(e) {
+              e.preventDefault();
+              const form = e.target;
+              const formData = new FormData(form);
+              const errorDiv = document.getElementById('login-error');
+              errorDiv.style.visibility = 'hidden';
+              const response = await fetch('/', {
+                method: 'POST',
+                body: formData
+              });
+              if (response.ok) {
+                window.location.href = '/main';
+              } else {
+                errorDiv.textContent = 'Email or password is incorrect.';
+                errorDiv.style.visibility = 'visible';
+              }
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
