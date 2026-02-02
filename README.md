@@ -33,12 +33,14 @@ UTH_ConfMS/
 │       ├── reviews.py         # /api/v1/reviews
 │       └── pc_members.py      # /api/v1/pc-members
 
-# Hướng dẫn chạy app:
+## Hướng dẫn chạy app:
 Yêu cầu: Python 3.11 trở lên, PostgresSQL(Nếu cần tạo database), pip, uv
 Bước 1: Clone source: - clone https://github.com/Khoi2310/UTH_ConfMS
                         cd UTH_ConfMS
 Cài đặt môi trường ảo: 
  pip install uv
  uv venv
-Bước 2: Cài đặt các tool dự án : pip install -r requirements.txt
-Bước 3: Cài đặt môi trường(
+ Window: .venv\Scripts\activate
+ macOS/Linux: source .venv/bin/activate
+Bước 2: Cài đặt các tool dự án : uv pip install -r requirements.txt hoặc pip install -e
+Bước 3: Thiết lập database PostgresSQL
